@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="uz">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport"
+              content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <title>Kirish | Yulduzcha Generatsiyasi</title>
+        <!-- Font Awesome -->
+        <link
+                href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+                rel="stylesheet"
+        />
+        <!-- Google Fonts -->
+        <link
+                href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
+                rel="stylesheet"
+        />
+        <!-- MDB -->
+        <link
+                href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/7.3.2/mdb.min.css"
+                rel="stylesheet"
+        />
+    </head>
+    <body>
+        <section class="vh-100" style="background-color: #fff;">
+            <div class="container py-5 h-100">
+                <div class="row d-flex justify-content-center align-items-center h-100">
+                    <div class="col-12 col-md-8 col-lg-6 col-xl-5">
+                        <div class="card shadow-2-strong" style="border-radius: 1rem;">
+                            <div class="card-body p-5 text-center">
+                                
+                                <h3 class="mb-5">Kirish</h3>
+
+                                {% if messages %}
+                                    {% for message in messages %}
+                                        <div class="alert alert-{{ message.tags }}" role="alert">
+                                            {{ message }}
+                                        </div>
+                                    {% endfor %}
+                                {% endif %}
+
+                                <form method="post" action="{% url 'login' %}">
+                                    {% csrf_token %}
+                                    <div data-mdb-input-init class="form-outline mb-4">
+                                        <input type="text" id="emailInput" name="email" class="form-control form-control-lg" required/>
+                                        <label class="form-label" for="emailInput">Login:</label>
+                                    </div>
+
+                                    <div data-mdb-input-init class="form-outline mb-4">
+                                        <input type="password" id="passwordInput" name="password" class="form-control form-control-lg" required/>
+                                        <label class="form-label" for="passwordInput">Parol:</label>
+                                    </div>
+
+                                    <button type="submit" class="btn btn-success btn-lg btn-block">
+                                        Kirish
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- MDB -->
+        <script
+                type="text/javascript"
+                src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/7.3.2/mdb.umd.min.js"
+        ></script>
+    </body>
+</html>

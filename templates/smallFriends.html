@@ -1,0 +1,138 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+    <main class="container-fluid">
+        <section class="main-section text-center" style="width: 60%;">
+            <form id="smallFriendsForm" action="{% url 'smallFriends' %}" method="post">
+                {% csrf_token %}
+                <div class="row d-flex" style="width: 100%; font-size: 20px;">
+                    <div class="col-12 col-md-4 mb-3">
+                        <label for="ustun">Ustunlar soni:</label>
+                        <select name="column" class="form-select text-center" id="ustun" aria-label="Default select example">
+                            <option value="4">4 ta</option>
+                            <option value="5">5 ta</option>
+                            <option value="6">6 ta</option>
+                            <option value="7">7 ta</option>
+                            <option value="8">8 ta</option>
+                            <option value="9">9 ta</option>
+                            <option value="10">10 ta</option>
+                            <option value="11">11 ta</option>
+                            <option value="12">12 ta</option>
+                            <option value="13">13 ta</option>
+                            <option value="14">14 ta</option>
+                            <option value="15">15 ta</option>
+                        </select>
+                    </div>
+                    <div class="col-12 col-md-4 mb-3">
+                        <label for="xonalar">Xonalar soni:</label>
+                        <select name="size" class="form-select text-center" id="xonalar" aria-label="Default select example">
+                            <option value="1">1 ta</option>
+                        </select>
+                    </div>
+                    <div class="col-12 col-md-4 mb-3">
+                        <label for="misollar">Misollar soni:</label>
+                        <select name="count" class="form-select text-center" id="misollar" aria-label="Default select example">
+                            <option value="1">10 ta</option>
+                            <option value="2">20 ta</option>
+                            <option value="3">30 ta</option>
+                            <option value="4">40 ta</option>
+                            <option value="5">50 ta</option>
+                            <option value="6">60 ta</option>
+                            <option value="7">70 ta</option>
+                            <option value="8">80 ta</option>
+                            <option value="9">90 ta</option>
+                            <option value="10">100 ta</option>
+                            <option value="12">120 ta</option>
+                            <option value="14">140 ta</option>
+                            <option value="15">150 ta</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="row mt-3 d-flex justify-content-center start-home">
+                    <div class="col-7">
+                        <button id="startBtn" type="submit" class="btn w-100" style="background-color: #00DFA2; color: #fff; font-size: 20px; position: relative;">
+                            <span id="btnText">Start</span>
+                            <i id="spinner" class="fa fa-spinner fa-spin" role="status" style="display: none;"></i>
+                        </button>
+                    </div>
+                    <div class="col-5">
+                        <a href="{% url 'menu' %}" class="btn w-100" style="background-color: #00DFA2; color: #fff; font-size: 20px;">
+                            <i class="fa fa-home"></i>
+                        </a>
+                    </div>
+                </div>
+            </form>
+        </section>
+    </main>
+
+    <div class="section container">
+
+    </div>
+
+    <script>
+        document.getElementById('smallFriendsForm').addEventListener('submit', function(event) {
+        event.preventDefault(); // Formani to'xtatish
+    
+        var form = event.target;
+        var startBtn = document.getElementById('startBtn');
+        var btnText = document.getElementById('btnText');
+        var spinner = document.getElementById('spinner');
+    
+        // Spinnerni ko'rsatish va tugmani nofaol qilish
+        startBtn.disabled = true;
+        btnText.textContent = "Yuklanmoqda...";
+        spinner.style.display = 'inline-block';
+        startBtn.style.backgroundColor = '#86d2b0';
+    
+        // FormData obyektini yaratish
+        var formData = new FormData(form);
+    
+        // Fetch API orqali formani yuborish
+        fetch(form.action, {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'X-CSRFToken': form.querySelector('input[name="csrfmiddlewaretoken"]').value
+            }
+        })
+        .then(response => {
+            if (!response.ok) {
+                // Serverdan kelgan javobda xato bo'lsa, xatolikni qaytarish
+                return response.json().then(errorData => {
+                    throw new Error(errorData.error || 'Server xatosi');
+                });
+            }
+            return response.blob(); // Javobni blob formatida olish
+        })
+        .then(blob => {
+            var fileName = 'downloaded_file.pdf'; // Fayl nomini belgilash
+            var link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = fileName;
+            link.click();
+            URL.revokeObjectURL(link.href);
+    
+            // Formani tozalash va tugmani tiklash
+            form.reset();
+            startBtn.disabled = false;
+            btnText.textContent = "Start";
+            spinner.style.display = 'none';
+            startBtn.style.backgroundColor = '#00DFA2';
+        })
+        .catch(error => {
+            // Tugmani tiklash va xatoni ko'rsatish
+            startBtn.disabled = false;
+            btnText.textContent = "Start";
+            spinner.style.display = 'none';
+            startBtn.style.backgroundColor = '#00DFA2';
+    
+            console.error('Xatolik:', error);
+            alert('Faylni yuklashda xatolik yuz berdi: ' + error.message);
+        });
+    });
+
+    </script>
+
+
+{% endblock %}
