@@ -1,7 +1,4 @@
-from datetime import datetime
-from pprint import pprint
 from .smallFriend import small_friend
-from .tableInPDF import create_pdf
 
 
 

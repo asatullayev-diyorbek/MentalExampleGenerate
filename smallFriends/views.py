@@ -9,7 +9,6 @@ from django.core.files.storage import default_storage
 from weasyprint import HTML
 from .models import Generate
 from django.contrib.auth.mixins import LoginRequiredMixin
-import base64
 
 
 class Menu(LoginRequiredMixin, View):
