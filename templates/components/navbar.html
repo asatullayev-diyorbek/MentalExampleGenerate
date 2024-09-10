@@ -1,0 +1,97 @@
+{% load static %}
+
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg"
+    style="background-color: #00DFA2;">
+    <!-- Container wrapper -->
+    <div class="container">
+        <!-- Toggle button -->
+        <button
+                data-mdb-collapse-init
+                class="navbar-toggler"
+                type="button"
+                data-mdb-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent"
+                aria-expanded="false"
+                aria-label="Toggle navigation"
+        >
+            <i class="fas fa-bars"></i>
+        </button>
+
+        <!-- Collapsible wrapper -->
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <!-- Navbar brand -->
+            <a class="navbar-brand mt-2 mt-lg-0" href="{% url 'menu' %}">
+                <img
+                        src="{% static 'logo/logo.png' %}"
+                        height="50"
+                        alt="Star"
+                        loading="lazy"
+                />
+            </a>
+            <!-- Left links -->
+{#            <ul class="navbar-nav me-auto mb-2 mb-lg-0">#}
+{#                <li class="nav-item">#}
+{#                    <a class="nav-link" href="{% url 'menu' %}">Bosh sahifa</a>#}
+{#                </li>#}
+{#                <li class="nav-item">#}
+{#                    <a class="nav-link" href="{% url 'menu' %}">Bosh sahifa</a>#}
+{#                </li>#}
+{#            </ul>#}
+            <!-- Left links -->
+        </div>
+
+        <!-- Collapsible wrapper -->
+        <div class="collapse navbar-collapse">
+            <!-- Avatar -->
+            <h3
+                    class="brand-name font-italic"
+                    style="
+                        font-family: Satisfy, cursive;
+                        font-weight: bold;
+                        font-size: 26px;
+                    "
+
+            >
+                Yulduzcha Generatsiyasi &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            </h3>
+        </div>
+
+        <!-- Right elements -->
+        <div class="d-flex align-items-center">
+            <!-- Avatar -->
+            <div class="dropdown">
+                <a
+                        data-mdb-dropdown-init
+                        class="dropdown-toggle d-flex align-items-center hidden-arrow"
+                        href="#"
+                        id="navbarDropdownMenuAvatar"
+                        role="button"
+                        aria-expanded="false"
+                >
+                    <img
+                            src="{% static 'logo/user.png' %}"
+                            class="rounded-circle"  
+                            height="50"
+                            alt="Black and White Portrait of a Man"
+                            loading="lazy"
+                    />
+                </a>
+                <ul
+                        class="dropdown-menu dropdown-menu-end"
+                        aria-labelledby="navbarDropdownMenuAvatar"
+                >
+                    {% if request.user.is_authenticated %}
+                        <li><a class="dropdown-item">{{ request.user.get_full_name }}</a></li>
+                        <li><a class="dropdown-item" href="{% url 'logout' %}" style="color: red;">Chiqish</a></li>
+                    {% else %}
+                        <li><a class="dropdown-item" href="{% url 'login' %}" style="color: blue">Kirish</a></li>
+                    {% endif %} 
+                </ul>
+            </div>
+        </div>
+        <!-- Right elements -->
+    </div>
+    <!-- Container wrapper -->
+</nav>
+<!-- Navbar -->

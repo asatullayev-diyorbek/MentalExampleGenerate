@@ -1,30 +1,91 @@
 {% extends 'base.html' %}
 
 {% block content %}
+    
     <!-- Asosiy kontent bo'limi -->
     <main class="container">
-        <section class="main-section text-center">
+        <section class="main-section text-center mt-5">
+            <h2 class="mb-4">MENYU</h2>
             <div class="row justify-content-center">
-                <div class="col-12 col-md-6 mb-3">
-                    <a class="btn main-section_btn" style="opacity: .6 ;">ODDIY</a>
+                <!-- Tugmalarni kartalar kabi uslubda dizayn qilish -->
+                <div class="col-12 col-sm-6 col-md-6 col-lg-4 mb-3 d-flex justify-content-center">
+                    <div class="card w-100">
+                        <div class="card-header text-center pt-4">
+                            <p class="text-uppercase mb-2">
+                                <strong>ODDIY</strong>
+                            </p>
+                            <button type="button" class="btn btn-primary btn-lg w-100 mb-3" style="opacity: .6;">
+                                Kirish
+                            </button>
+                        </div>
+                    </div>
                 </div>
-                <div class="col-12 col-md-6 mb-3">
-                    <a class="btn  main-section_btn" href="{% url 'smallFriends' %}">KICHIK DO'ST</a>
+
+                <div class="col-12 col-sm-6 col-md-6 col-lg-4 mb-3 d-flex justify-content-center">
+                    <div class="card w-100">
+                        <div class="card-header text-center pt-4">
+                            <p class="text-uppercase mb-2">
+                                <strong>KICHIK DO'ST</strong>
+                            </p>
+                            <a class="btn btn-success btn-lg w-100 mb-3" href="{% url 'smallFriends' %}">
+                                Kirish
+                            </a>
+                        </div>
+                    </div>
                 </div>
-                <div class="col-12 col-md-6 mb-3">
-                    <a class="btn  main-section_btn" style="opacity: .6 ;">KATTA DO'ST</a>
+
+                <div class="col-12 col-sm-6 col-md-6 col-lg-4 mb-3 d-flex justify-content-center">
+                    <div class="card w-100">
+                        <div class="card-header text-center pt-4">
+                            <p class="text-uppercase mb-2">
+                                <strong>KATTA DO'ST</strong>
+                            </p>
+                            <button type="button" class="btn btn-primary btn-lg w-100 mb-3" style="opacity: .6;">
+                                Kirish
+                            </button>
+                        </div>
+                    </div>
                 </div>
-                <div class="col-12 col-md-6 mb-3">
-                    <a class="btn  main-section_btn" style="opacity: .6 ;">OILA</a>
+
+                <div class="col-12 col-sm-6 col-md-6 col-lg-4 mb-3 d-flex justify-content-center">
+                    <div class="card w-100">
+                        <div class="card-header text-center pt-4">
+                            <p class="text-uppercase mb-2">
+                                <strong>OILA</strong>
+                            </p>
+                            <button type="button" class="btn btn-primary btn-lg w-100 mb-3" style="opacity: .6;">
+                                Kirish
+                            </button>
+                        </div>
+                    </div>
                 </div>
-                <div class="col-12 col-md-6 mb-3">
-                    <a class="btn  main-section_btn" style="opacity: .6 ;">KO'PAYTIRISH</a>
+
+                <div class="col-12 col-sm-6 col-md-6 col-lg-4 mb-3 d-flex justify-content-center">
+                    <div class="card w-100">
+                        <div class="card-header text-center pt-4">
+                            <p class="text-uppercase mb-2">
+                                <strong>KO'PAYTIRISH</strong>
+                            </p>
+                            <button type="button" class="btn btn-primary btn-lg w-100 mb-3" style="opacity: .6;">
+                                Kirish
+                            </button>
+                        </div>
+                    </div>
                 </div>
-                <div class="col-12 col-md-6 mb-3">
-                    <a class="btn  main-section_btn" style="opacity: .6 ;">BO'LISH</a>
+
+                <div class="col-12 col-sm-6 col-md-6 col-lg-4 mb-3 d-flex justify-content-center">
+                    <div class="card w-100">
+                        <div class="card-header text-center pt-4">
+                            <p class="text-uppercase mb-2">
+                                <strong>BO'LISH</strong>
+                            </p>
+                            <button type="button" class="btn btn-primary btn-lg w-100 mb-3" style="opacity: .6;">
+                                Kirish
+                            </button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>
     </main>
-
 {% endblock %}

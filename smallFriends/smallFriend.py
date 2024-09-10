@@ -1,6 +1,8 @@
 import random
 from pprint import pprint
 
+from django.views.decorators.http import condition
+
 # Kichik do'st sonlar
 small_friends = [(1, 4), (2, 3), (3, 2), (4, 1)]
 
@@ -10,7 +12,7 @@ def find_small_friend_pair(num):
             return pair
     return None
 
-def generate_example(column):
+def generate_example(column, requirement):
     while True:
         current_result = random.randint(1, 9)
         numbers = [current_result]
@@ -48,17 +50,19 @@ def generate_example(column):
             expression = f"{numbers[0]}"
             for i in range(column-1):
                 expression += f" {operations[i]}{numbers[i + 1]}"
+            if not requirement in expression:
+                continue
             return expression, current_result
 
 
-def small_friend(column=5, size=1, count=10):
+def small_friend(column=5, size=1, count=10, requirement=' '):
     response = {
         'examples': [],
         'results': []
     }
 
     for i in range(count):
-        example, result = generate_example(column)
+        example, result = generate_example(column=column, requirement=requirement)
         td = example.split(' ')
         response['examples'].append(td)
         response['results'].append(result)

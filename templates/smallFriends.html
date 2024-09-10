@@ -1,15 +1,18 @@
 {% extends 'base.html' %}
 
-
 {% block content %}
-    <main class="container-fluid">
+    <main class="container-fluid d-flex justify-content-center align-items-center">
         <section class="main-section text-center" style="width: 60%;">
+            <!-- Bo'lim nomi -->
+            <h2 class="mb-4">{{ section }}</h2>
+            <h6>{{ error }}</h6>
+
             <form id="smallFriendsForm" action="{% url 'smallFriends' %}" method="post">
                 {% csrf_token %}
                 <div class="row d-flex" style="width: 100%; font-size: 20px;">
                     <div class="col-12 col-md-4 mb-3">
                         <label for="ustun">Ustunlar soni:</label>
-                        <select name="column" class="form-select text-center" id="ustun" aria-label="Default select example">
+                        <select name="column" class="form-select text-center" id="ustun">
                             <option value="4">4 ta</option>
                             <option value="5">5 ta</option>
                             <option value="6">6 ta</option>
@@ -32,7 +35,7 @@
                     </div>
                     <div class="col-12 col-md-4 mb-3">
                         <label for="misollar">Misollar soni:</label>
-                        <select name="count" class="form-select text-center" id="misollar" aria-label="Default select example">
+                        <select name="count" class="form-select text-center" id="misollar">
                             <option value="1">10 ta</option>
                             <option value="2">20 ta</option>
                             <option value="3">30 ta</option>
@@ -48,91 +51,97 @@
                             <option value="15">150 ta</option>
                         </select>
                     </div>
+
+                    <div class="col-12 col-md-4 mb-3">
+                        <label for="misollar">Talab:</label>
+                        <select name="requirement" class="form-select text-center" id="misollar">
+                            <option value=" " selected>Yo'q</option>
+                            <option value="-4">-4</option>
+                            <option value="-3">-3</option>
+                            <option value="-2">-2</option>
+                            <option value="-1">-1</option>
+                            <option value="+1">+1</option>
+                            <option value="+2">+2</option>
+                            <option value="+3">+3</option>
+                            <option value="+4">+4</option>
+                        </select>
+                    </div>
+
+                    <div class="col-12 col-md-4 mb-3">
+                        <label for="misollar">Uslub:</label>
+                        <select name="method" class="form-select text-center" id="misollar"
+                                aria-label="Misollar sonini tanlang">
+                            <option value="parallel">Parallel</option>
+                            <option value="mixed" selected>Aralash</option>
+                        </select>
+                    </div>
+
+
                 </div>
                 <div class="row mt-3 d-flex justify-content-center start-home">
-                    <div class="col-7">
-                        <button id="startBtn" type="submit" class="btn w-100" style="background-color: #00DFA2; color: #fff; font-size: 20px; position: relative;">
-                            <span id="btnText">Start</span>
+                    <div class="col">
+                        <button id="startBtn" type="submit" class="btn btn-success btn-lg btn-block mb-3" style="position: relative;">
+                            <span id="btnText">Generatsiya</span>
                             <i id="spinner" class="fa fa-spinner fa-spin" role="status" style="display: none;"></i>
                         </button>
                     </div>
-                    <div class="col-5">
-                        <a href="{% url 'menu' %}" class="btn w-100" style="background-color: #00DFA2; color: #fff; font-size: 20px;">
+                    <div class="col">
+                        <a href="{% url 'menu' %}" class="btn btn-primary btn-lg btn-block">
                             <i class="fa fa-home"></i>
                         </a>
                     </div>
                 </div>
             </form>
+
+            {% if file_id %}
+                <div class="row">
+                    <div class="col">
+                        <a href="{% url 'download' file_id %}" class="btn btn-outline-warning btn-lg btn-block mt-3">
+                            <span id="btnText">Yuklab olish</span>
+                        </a>
+                    </div>
+                </div>
+            {% endif %}
         </section>
     </main>
 
-    <div class="section container">
-
-    </div>
-
     <script>
-        document.getElementById('smallFriendsForm').addEventListener('submit', function(event) {
-        event.preventDefault(); // Formani to'xtatish
-    
-        var form = event.target;
-        var startBtn = document.getElementById('startBtn');
-        var btnText = document.getElementById('btnText');
-        var spinner = document.getElementById('spinner');
-    
-        // Spinnerni ko'rsatish va tugmani nofaol qilish
-        startBtn.disabled = true;
-        btnText.textContent = "Yuklanmoqda...";
-        spinner.style.display = 'inline-block';
-        startBtn.style.backgroundColor = '#86d2b0';
-    
-        // FormData obyektini yaratish
-        var formData = new FormData(form);
-    
-        // Fetch API orqali formani yuborish
-        fetch(form.action, {
-            method: 'POST',
-            body: formData,
-            headers: {
-                'X-CSRFToken': form.querySelector('input[name="csrfmiddlewaretoken"]').value
-            }
-        })
-        .then(response => {
-            if (!response.ok) {
-                // Serverdan kelgan javobda xato bo'lsa, xatolikni qaytarish
-                return response.json().then(errorData => {
-                    throw new Error(errorData.error || 'Server xatosi');
-                });
-            }
-            return response.blob(); // Javobni blob formatida olish
-        })
-        .then(blob => {
-            var fileName = 'downloaded_file.pdf'; // Fayl nomini belgilash
-            var link = document.createElement('a');
-            link.href = URL.createObjectURL(blob);
-            link.download = fileName;
-            link.click();
-            URL.revokeObjectURL(link.href);
-    
-            // Formani tozalash va tugmani tiklash
-            form.reset();
-            startBtn.disabled = false;
-            btnText.textContent = "Start";
-            spinner.style.display = 'none';
-            startBtn.style.backgroundColor = '#00DFA2';
-        })
-        .catch(error => {
-            // Tugmani tiklash va xatoni ko'rsatish
-            startBtn.disabled = false;
-            btnText.textContent = "Start";
-            spinner.style.display = 'none';
-            startBtn.style.backgroundColor = '#00DFA2';
-    
-            console.error('Xatolik:', error);
-            alert('Faylni yuklashda xatolik yuz berdi: ' + error.message);
+        document.getElementById('smallFriendsForm').addEventListener('submit', function (event) {
+            event.preventDefault();
+
+            var form = event.target;
+            var startBtn = document.getElementById('startBtn');
+            var btnText = document.getElementById('btnText');
+            var spinner = document.getElementById('spinner');
+
+            startBtn.disabled = true;
+            btnText.textContent = "Yuklanmoqda...";
+            spinner.style.display = 'inline-block';
+            startBtn.style.backgroundColor = '#86d2b0';
+
+            // Formani yuborish
+            form.submit();
+            form.reset()
         });
-    });
 
     </script>
+    <style>
+        .responsive-btn {
+            font-size: 1.5rem;
+        }
 
+        /* Ekran kengligi 768px dan kichik bo'lsa */
+        @media (max-width: 768px) {
+            .responsive-btn {
+                font-size: 1.2rem;
+            }
+        }
 
+        /* Ekran kengligi 576px dan kichik bo'lsa */
+        @media (max-width: 576px) {
+            .responsive-btn {
+                font-size: 1rem;
+            }
+        }
+    </style>
 {% endblock %}

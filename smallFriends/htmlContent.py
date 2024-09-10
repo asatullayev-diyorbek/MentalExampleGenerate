@@ -3,7 +3,7 @@ from .smallFriend import small_friend
 
 
 
-def html_content(column, size, count, mode):
+def html_content(column, size, count, mode, requirement, method):
     style_css = """
         <style>
             @page{margin:10px}table{page-break-inside: avoid;width:100%;border-collapse:collapse;margin:20px 0;font-size:18px;font-family:Arial,
@@ -36,7 +36,7 @@ def html_content(column, size, count, mode):
 
     title_block = f"""
         <h3 class="title">
-            {column} ustun {mode} {size} xona {count * 10} ta
+            {column} ustun {mode} {size} xona {requirement} {count * 10} ta {'parallel' if method == 'parallel' else 'aralash'}
         </h3>
     """
 
@@ -44,7 +44,7 @@ def html_content(column, size, count, mode):
     result_tables = []
 
     for i in range(count):
-        res = small_friend(column=column, size=1, count=10)
+        res = small_friend(column=column, size=1, count=10, requirement=requirement)
 
         thead_piece = f"""
             <thead>
