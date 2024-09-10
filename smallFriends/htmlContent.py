@@ -59,7 +59,7 @@ def html_content(column, size, count, mode, requirement, method):
 
         tbody_piece = f"""
             <tbody>
-                {''.join(f"<tr>{td_piece(j, res['examples'])}</tr>\n" for j in range(len(res['examples'][0])))}
+                {''.join(f"<tr>{td_piece(j, res['examples'])}</tr>" for j in range(len(res['examples'][0])))}
                 <tr>{''.join("<td> </td>" for _ in range(len(res['examples'])))}</tr>
                 <tr>{''.join("<td> </td>" for _ in range(len(res['examples'])))}</tr>
             </tbody>
@@ -68,7 +68,7 @@ def html_content(column, size, count, mode, requirement, method):
         tbody_piece_result = f"""
                 <tbody>
                     <tr>
-                        {''.join(f"<td>{j}</td>\n" for j in res['results'])}
+                        {''.join(f"<td>{j}</td>" for j in res['results'])}
                     </tr>
                 </tbody>
             """

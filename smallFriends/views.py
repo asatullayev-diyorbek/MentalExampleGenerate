@@ -36,16 +36,17 @@ class SmallFriends(LoginRequiredMixin, View):
 
         f_name = f"{column} ustun {mode} {size} xona {count}0 ta {requirement} {'parallel' if method == 'parallel' else 'aralash'} " + str(int(datetime.datetime.now().timestamp()))
         title = f"{column} ustun {mode} {size} xona {count}0 ta {requirement} {'parallel' if method == 'parallel' else 'aralash'}"
+
         # HTML fayl yaratish
         hc = html_content(column=int(column), size=int(size), count=int(count), mode=mode, requirement=requirement, method=method)
-        html_path = default_storage.save(f'generate/html/{f_name}.html', ContentFile(hc))
 
-        pdf_content = HTML(f'media/{html_path}').write_pdf()
+
+        pdf_content = HTML(string=hc).write_pdf()
         pdf_path = default_storage.save(f'generate/pdf/{f_name}.pdf', ContentFile(pdf_content))
 
         generate_instance = Generate(
             title=title,
-            file_html=html_path,
+            file_html=pdf_path,
             file_pdf=pdf_path,
             user=request.user,
         )
