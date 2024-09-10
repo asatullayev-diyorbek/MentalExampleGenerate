@@ -28,7 +28,7 @@ def html_content(column, size, count, mode, requirement, method):
     header_block = """
         <div class="header">
             <span class="logo">
-                 <img src="../../../static/logo/logo-40.png" alt="logo"> Yulduzcha<br>
+                 <img src="https://yulduzcha.pythonanywhere.com/static/logo/logo-40.png" alt="logo"> Yulduzcha<br>
                 <i> Generatsiyasi</i>
             </span>
         </div>
