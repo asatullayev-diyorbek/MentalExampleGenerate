@@ -94,7 +94,7 @@
             </form>
 
             {% if file_id %}
-                <div class="row">
+                <div id="download" class="row">
                     <div class="col">
                         <a href="{% url 'download' file_id %}" class="btn btn-outline-warning btn-lg btn-block mt-3 mb-3">
                             <span id="btnText">Yuklab olish</span>
@@ -113,35 +113,21 @@
             var startBtn = document.getElementById('startBtn');
             var btnText = document.getElementById('btnText');
             var spinner = document.getElementById('spinner');
-
+            var download = document.getElementById('download');
+            
             startBtn.disabled = true;
             btnText.textContent = "Yuklanmoqda...";
             spinner.style.display = 'inline-block';
             startBtn.style.backgroundColor = '#86d2b0';
-
+            
+            if (download) {
+                download.style.display = 'none';
+            }
+            
             // Formani yuborish
             form.submit();
             form.reset()
         });
 
     </script>
-    <style>
-        .responsive-btn {
-            font-size: 1.5rem;
-        }
-
-        /* Ekran kengligi 768px dan kichik bo'lsa */
-        @media (max-width: 768px) {
-            .responsive-btn {
-                font-size: 1.2rem;
-            }
-        }
-
-        /* Ekran kengligi 576px dan kichik bo'lsa */
-        @media (max-width: 576px) {
-            .responsive-btn {
-                font-size: 1rem;
-            }
-        }
-    </style>
 {% endblock %}

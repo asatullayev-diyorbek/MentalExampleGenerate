@@ -7,13 +7,13 @@
     <div class="container">
         <!-- Toggle button -->
         <button
-                data-mdb-collapse-init
-                class="navbar-toggler"
-                type="button"
-                data-mdb-target="#navbarSupportedContent"
-                aria-controls="navbarSupportedContent"
-                aria-expanded="false"
-                aria-label="Toggle navigation"
+            data-mdb-collapse-init
+            class="navbar-toggler"
+            type="button"
+            data-mdb-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
         >
             <i class="fas fa-bars"></i>
         </button>
@@ -23,10 +23,10 @@
             <!-- Navbar brand -->
             <a class="navbar-brand mt-2 mt-lg-0" href="{% url 'menu' %}">
                 <img
-                        src="{% static 'logo/logo.png' %}"
-                        height="50"
-                        alt="Star"
-                        loading="lazy"
+                    src="{% static 'smallFriends/logo/logo.png' %}"
+                    height="50"
+                    alt="Star"
+                    loading="lazy"
                 />
             </a>
             <!-- Left links -->
@@ -45,8 +45,8 @@
         <div class="collapse navbar-collapse">
             <!-- Avatar -->
             <h3
-                    class="brand-name font-italic"
-                    style="
+                class="brand-name font-italic"
+                style="
                         font-family: Satisfy, cursive;
                         font-weight: bold;
                         font-size: 26px;
@@ -62,24 +62,24 @@
             <!-- Avatar -->
             <div class="dropdown">
                 <a
-                        data-mdb-dropdown-init
-                        class="dropdown-toggle d-flex align-items-center hidden-arrow"
-                        href="#"
-                        id="navbarDropdownMenuAvatar"
-                        role="button"
-                        aria-expanded="false"
+                    data-mdb-dropdown-init
+                    class="dropdown-toggle d-flex align-items-center hidden-arrow"
+                    href="#"
+                    id="navbarDropdownMenuAvatar"
+                    role="button"
+                    aria-expanded="false"
                 >
                     <img
-                            src="{% static 'logo/user.png' %}"
-                            class="rounded-circle"  
-                            height="50"
-                            alt="Black and White Portrait of a Man"
-                            loading="lazy"
+                        src="{% static 'smallFriends/logo/user.png' %}"
+                        class="rounded-circle"  
+                        height="50"
+                        alt="Black and White Portrait of a Man"
+                        loading="lazy"
                     />
                 </a>
                 <ul
-                        class="dropdown-menu dropdown-menu-end"
-                        aria-labelledby="navbarDropdownMenuAvatar"
+                    class="dropdown-menu dropdown-menu-end"
+                    aria-labelledby="navbarDropdownMenuAvatar"
                 >
                     {% if request.user.is_authenticated %}
                         <li><a class="dropdown-item">{{ request.user.get_full_name }}</a></li>

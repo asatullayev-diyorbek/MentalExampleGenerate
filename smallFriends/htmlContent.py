@@ -1,8 +1,6 @@
 from .smallFriend import small_friend
 
 
-
-
 def html_content(column, size, count, mode, requirement, method):
     style_css = """
         <style>
@@ -11,24 +9,24 @@ def html_content(column, size, count, mode, requirement, method):
             bold;border:1px solid #000}th,td{height:25px;border:1px solid #000}tbody tr:hover{background-color:#f1f1f1;cursor:
             pointer}th{width:10%;font-size:25px;font-weight:300;color:#000}.header{padding:10px 30px;display:flex;justify-content:
             end;align-items:center;text-align:center}.header span{font-size:20px;text-align:center}.header span i{font-size:20px;
-            text-align:center} .results{height:45px} .new-page{page-break-before: always; page-break-inside: avoid;} 
+            text-align:center} .results{height:45px} .new-page{page-break-before: always; page-break-inside: avoid;} .pdf-logo{width:50px;}
         </style>"""
 
     head_html = f"""
-    <head>
-        <meta charset="UTF-8">
-        <title>Yulduzcha</title>
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="
-        sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin=
-        "anonymous" referrerpolicy="no-referrer" />
-        {style_css}
-    </head>
+        <head>
+            <meta charset="UTF-8">
+            <title>Yulduzcha</title>
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="
+            sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin=
+            "anonymous" referrerpolicy="no-referrer" />
+            {style_css}
+        </head>
     """
 
     header_block = """
         <div class="header">
             <span class="logo">
-                 <img src="https://yulduzcha.pythonanywhere.com/static/logo/logo-40.png" alt="logo"> Yulduzcha<br>
+                 <img class='pdf-logo' src="https://img.freepik.com/free-vector/3d-metal-star-isolated_1308-117760.jpg" alt="logo"> Yulduzcha<br>
                 <i> Generatsiyasi</i>
             </span>
         </div>
@@ -66,11 +64,11 @@ def html_content(column, size, count, mode, requirement, method):
         """
 
         tbody_piece_result = f"""
-                <tbody>
-                    <tr>
-                        {''.join(f"<td>{j}</td>" for j in res['results'])}
-                    </tr>
-                </tbody>
+            <tbody>
+                <tr>
+                    {''.join(f"<td>{j}</td>" for j in res['results'])}
+                </tr>
+            </tbody>
             """
 
         example_table = f"""
