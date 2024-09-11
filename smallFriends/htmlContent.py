@@ -1,7 +1,9 @@
 from .smallFriend import small_friend
+from .logo_base64 import base64_logo
 
 
 def html_content(column, size, count, mode, requirement, method):
+
     style_css = """
         <style>
             @page{margin:10px}table{page-break-inside: avoid;width:100%;border-collapse:collapse;margin:20px 0;font-size:18px;font-family:Arial,
@@ -23,10 +25,10 @@ def html_content(column, size, count, mode, requirement, method):
         </head>
     """
 
-    header_block = """
+    header_block = f"""
         <div class="header">
             <span class="logo">
-                 <img class='pdf-logo' src="https://img.freepik.com/free-vector/3d-metal-star-isolated_1308-117760.jpg" alt="logo"> Yulduzcha<br>
+                 <img class='pdf-logo' src="{base64_logo}" alt="logo"> Yulduzcha<br>
                 <i> Generatsiyasi</i>
             </span>
         </div>
