@@ -1,8 +1,10 @@
+import asyncio
+
 from .smallFriend import small_friend
 from .logo_base64 import base64_logo
 
 
-def html_content(column, size, count, mode, requirement, method):
+def html_content(column, digits, count, mode, requirement, method):
 
     style_css = """
         <style>
@@ -36,7 +38,7 @@ def html_content(column, size, count, mode, requirement, method):
 
     title_block = f"""
         <h3 class="title">
-            {column} ustun {mode} {size} xona {requirement} {count * 10} ta {'parallel' if method == 'parallel' else 'aralash'}
+            {column} ustun {mode} {digits} xona {requirement} {count * 10} ta {'parallel' if method == 'parallel' else 'aralash'}
         </h3>
     """
 
@@ -44,7 +46,7 @@ def html_content(column, size, count, mode, requirement, method):
     result_tables = []
 
     for i in range(count):
-        res = small_friend(column=column, size=1, count=10, requirement=requirement)
+        res = small_friend(column=column, digits=digits, count=10, requirement=requirement, method=method)
 
         thead_piece = f"""
             <thead>

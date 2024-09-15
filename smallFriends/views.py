@@ -30,15 +30,16 @@ class SmallFriends(LoginRequiredMixin, View):
 
     def post(self, request):
         print("So'rov keldi")
-        column, size, count = request.POST.get('column'), request.POST.get('size'), request.POST.get('count')
+        start = datetime.datetime.now()
+        column, digits, count = request.POST.get('column'), request.POST.get('digits'), request.POST.get('count')
         requirement, method = request.POST.get('requirement'), request.POST.get('method')
         mode = "kichik-dust"
 
-        f_name = f"{column} ustun {mode} {size} xona {count}0 ta {requirement} {'parallel' if method == 'parallel' else 'aralash'} " + str(int(datetime.datetime.now().timestamp()))
-        title = f"{column} ustun {mode} {size} xona {count}0 ta {requirement} {'parallel' if method == 'parallel' else 'aralash'}"
+        f_name = f"{column} ustun {mode} {digits} xona {count}0 ta {requirement} {'parallel' if method == 'parallel' else 'aralash'} " + str(int(datetime.datetime.now().timestamp()))
+        title = f"{column} ustun {mode} {digits} xona {count}0 ta {requirement} {'parallel' if method == 'parallel' else 'aralash'}"
 
         # HTML fayl yaratish
-        hc = html_content(column=int(column), size=int(size), count=int(count), mode=mode, requirement=requirement, method=method)
+        hc = html_content(column=int(column), digits=int(digits), count=int(count), mode=mode, requirement=requirement, method=method)
 
 
         pdf_content = HTML(string=hc).write_pdf()
@@ -60,6 +61,8 @@ class SmallFriends(LoginRequiredMixin, View):
                     'section': "Kichik do'st sonlar",
                     'file_id': generate_instance.id,
                 }
+                end = datetime.datetime.now()
+                print(f"Generatsiya vaqti: {end-start}")
                 return render(request, 'smallFriends.html', context)
         context = {
             'title': "Kichik do'st",
@@ -75,7 +78,7 @@ def download_pdf(request, file_id):
         if os.path.exists(file_path):
             with open(file_path, 'rb') as fh:
                 response = HttpResponse(fh.read(), content_type="application/octet-stream")
-                response['Content-Disposition'] = f'attachment; filename={os.path.basename(file_path)}'
+                response['Content-Disposition'] = f'attachment; filename={file_instance.title}.pdf'
                 return response
     raise Http404("Fayl mavjud emas yoki topilmadi.")
 
