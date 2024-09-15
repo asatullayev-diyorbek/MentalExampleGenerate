@@ -10,6 +10,12 @@ from weasyprint import HTML
 from .models import Generate
 from django.contrib.auth.mixins import LoginRequiredMixin
 
+METHOD = {
+    'parallel': 'Parallel',
+    'mixed': 'Aralash',
+    'tenner': "O'nlik"
+}
+
 
 class Menu(LoginRequiredMixin, View):
     def get(self, request):
@@ -29,17 +35,16 @@ class SmallFriends(LoginRequiredMixin, View):
         return render(request, 'smallFriends.html', context)
 
     def post(self, request):
-        print("So'rov keldi")
         start = datetime.datetime.now()
         column, digits, count = request.POST.get('column'), request.POST.get('digits'), request.POST.get('count')
         requirement, method = request.POST.get('requirement'), request.POST.get('method')
-        mode = "kichik-dust"
+        mode = "Kichik do'st"
 
-        f_name = f"{column} ustun {mode} {digits} xona {count}0 ta {requirement} {'parallel' if method == 'parallel' else 'aralash'} " + str(int(datetime.datetime.now().timestamp()))
-        title = f"{column} ustun {mode} {digits} xona {count}0 ta {requirement} {'parallel' if method == 'parallel' else 'aralash'}"
+        f_name = f"{column} ustun {mode} {digits} xona {count}0 ta {requirement} {METHOD[method]} " + str(int(datetime.datetime.now().timestamp()))
+        title = f"{column} ustun {mode} {digits} xona {count}0 ta {requirement} {METHOD[method]}"
 
         # HTML fayl yaratish
-        hc = html_content(column=int(column), digits=int(digits), count=int(count), mode=mode, requirement=requirement, method=method)
+        hc = html_content(column=int(column), digits=int(digits), count=int(count), mode=mode, requirement=requirement, method=method, title=title)
 
 
         pdf_content = HTML(string=hc).write_pdf()

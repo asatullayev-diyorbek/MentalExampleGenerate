@@ -4,7 +4,7 @@ from .smallFriend import small_friend
 from .logo_base64 import base64_logo
 
 
-def html_content(column, digits, count, mode, requirement, method):
+def html_content(column, digits, count, mode, requirement, method, title):
 
     style_css = """
         <style>
@@ -38,7 +38,7 @@ def html_content(column, digits, count, mode, requirement, method):
 
     title_block = f"""
         <h3 class="title">
-            {column} ustun {mode} {digits} xona {requirement} {count * 10} ta {'parallel' if method == 'parallel' else 'aralash'}
+            {title}
         </h3>
     """
 
