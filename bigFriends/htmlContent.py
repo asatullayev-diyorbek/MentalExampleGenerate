@@ -1,5 +1,6 @@
-from .smallFriend import small_friend
-from .logo_base64 import base64_logo
+import datetime
+from bigFriends.bigFriend import large_friend
+from bigFriends.logo_base64 import base64_logo
 
 
 def html_content(column, digits, count, requirement, method, title):
@@ -28,7 +29,7 @@ def html_content(column, digits, count, requirement, method, title):
     header_block = f"""
         <div class="header">
             <span class="logo">
-                 <img class='pdf-logo' src="{base64_logo}" alt="logo"> Yulduzcha<br>
+                <img class='pdf-logo' src="{base64_logo}" alt="logo"> Yulduzcha<br>
                 <i> Generatsiyasi</i>
             </span>
         </div>
@@ -44,7 +45,7 @@ def html_content(column, digits, count, requirement, method, title):
     result_tables = []
 
     for i in range(count):
-        res = small_friend(column=column, digits=digits, count=10, requirement=requirement, method=method)
+        res = large_friend(column=column, digits=digits, count=10, requirement=requirement, method=method)
 
         thead_piece = f"""
             <thead>
@@ -94,7 +95,6 @@ def html_content(column, digits, count, requirement, method, title):
         result_tables.append(
             result_table
         )
-
     content = "<html lang='eng'>\n"
     content += head_html + '\n'
     content += "<body>"
@@ -110,4 +110,11 @@ def html_content(column, digits, count, requirement, method, title):
     content += "</div>"
     content += "</body>\n</html>"
     return content
+
+
+if __name__ == "__main__":
+    content = html_content(column=5, digits=1, count=10, mode="Katta do'st", requirement=' ', method='mixed', title=f'shunchaki {datetime.datetime.now()}')
+    with open('html.html', 'w') as f:
+        f.write(content)
+        print("Saqlandi")
 

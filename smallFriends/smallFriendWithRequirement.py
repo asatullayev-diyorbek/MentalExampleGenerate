@@ -6,7 +6,6 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 # Kichik do'st sonlar
 small_friends = [(1, 4), (2, 3), (3, 2), (4, 1)]
 
-
 def find_small_friend_pair(num):
     """Kichik do'st juftligini topadi."""
     for pair in small_friends:
@@ -14,25 +13,11 @@ def find_small_friend_pair(num):
             return pair
     return None
 
-
 def get_digit_range(digits):
     """Raqamlar uzunligi bo'yicha qiymatlar oraliqlarini qaytaradi."""
     if digits < 1 or digits > 5:
         raise ValueError("Raqamlar uzunligi 1 dan 5 gacha bo'lishi kerak.")
     return 10**(digits-1), 10**digits - 1
-
-
-def check_requirement(current_result, num, operation, requirement):
-    """Requirement shartlarini tekshiradi va faqat 1 marta ishlatilishi kerak."""
-    requirement_num = int(requirement[1])
-    if operation == '+' and requirement[0] == '+' and num == requirement_num:
-        if current_result < 5 and current_result + requirement_num >= 5:
-            return True
-    elif operation == '-' and requirement[0] == '-' and num == requirement_num:
-        if current_result >= 5 and current_result - requirement_num <= 4:
-            return True
-    return False
-
 
 def generate_example(column, digits, requirement, method):
     """Misollarni generatsiya qiladi."""
@@ -52,26 +37,42 @@ def generate_example(column, digits, requirement, method):
         else:
             raise ValueError("Metod 'parallel', 'mixed' yoki 'tenner' bo'lishi kerak.")
 
+    def check_requirement(current_result, operation, num, requirement):
+        """Requirement shartini tekshiradi."""
+        if digits == 1 and requirement:
+            required_num = int(requirement[1])  # Talab qilingan oxirgi raqam
+            if operation == '+' and requirement[0] == '+':
+                # Birinchi raqam 5 dan kichik bo'lishi kerak
+                if current_result < 5 and current_result + num >= 5 and num == required_num:
+                    return True
+                else:
+                    return False
+            elif operation == '-' and requirement[0] == '-':
+                # Birinchi raqam 5 yoki undan katta bo'lishi kerak
+                if current_result >= 5 and current_result - num <= 4 and num == required_num:
+                    return True
+                else:
+                    return False
+        return True
+
+
     def process_operation(current_result):
         """Hisoblash va kichik do'stni tekshirishni bajaradi."""
         operations = []
         numbers = [current_result]
         small_friend_found = False
+
         condition = 0
+        is_requirement_met = False
 
-        if requirement and digits == 1:
-            requirement_found = False
-        else:
-            requirement_found = True
-
-        # Misol yaratish jarayoni
         while condition < column - 1:
             operation = random.choice(['+', '-'])
             num = get_number()
 
+            if not is_requirement_met:
+                is_requirement_met = check_requirement(current_result, operation, num, requirement)
+
             small_friend_pair = find_small_friend_pair(num % 10) if method != 'tenner' else find_small_friend_pair(num // 10**(digits - 1))
-            if not requirement_found:
-                requirement_found = check_requirement(current_result, num, operation, requirement)
 
             if not small_friend_pair:
                 continue
@@ -96,9 +97,10 @@ def generate_example(column, digits, requirement, method):
                         small_friend_found = True
                 else:
                     continue
+
             condition += 1
 
-        if len(numbers) == column and small_friend_found and min_val <= current_result <= max_val and requirement_found:
+        if len(numbers) == column and small_friend_found and min_val <= current_result <= max_val and is_requirement_met:
             expression = f'{numbers[0]}'
             for i in range(column - 1):
                 expression += f" {operations[i]}{numbers[i + 1]}"
@@ -111,8 +113,7 @@ def generate_example(column, digits, requirement, method):
         if result[0] is not None and result[1] is not None:
             return result
 
-
-def small_friend(column=5, digits=1, count=10, requirement=None, method='mixed'):
+def small_friend(column=5, digits=1, count=10, requirement=' ', method='mixed'):
     """Ko'p miqdordagi kichik do'st misollarini generatsiya qiladi."""
     response = {
         'examples': [],
@@ -127,13 +128,13 @@ def small_friend(column=5, digits=1, count=10, requirement=None, method='mixed')
                 td = example.split(' ')
                 response['examples'].append(td)
                 response['results'].append(result)
-    return response
 
+    return response
 
 if __name__ == '__main__':
     start = datetime.now()
     for _ in range(1):
         print(_ + 1)
-        pprint(small_friend(column=5, digits=1, method='parallel', requirement='-3'))
+        pprint(small_friend(column=5, digits=1, method='mixed', requirement='-3'))
     end = datetime.now()
     print(f"Ijro vaqt: {end - start}")

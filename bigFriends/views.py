@@ -1,44 +1,31 @@
-import os
-from django.core.files.base import ContentFile
-from django.http import HttpResponse, Http404
-from django.shortcuts import render, get_object_or_404
-from django.views.generic import View
 import datetime
-from .htmlContent import html_content
-from django.core.files.storage import default_storage
-from weasyprint import HTML
-from .models import Generate
+import os
+
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.core.files.base import ContentFile
+from django.core.files.storage import default_storage
+from django.shortcuts import render
+from django.views.generic import View
+from weasyprint import HTML
 
-METHOD = {
-    'parallel': 'Parallel',
-    'mixed': 'Aralash',
-    'tenner': "O'nlik"
-}
+from bigFriends.htmlContent import html_content
+from smallFriends.models import Generate
+from smallFriends.views import METHOD
 
 
-class Menu(LoginRequiredMixin, View):
+class BigFriends(LoginRequiredMixin, View):
     def get(self, request):
         context = {
-            'title': 'Yulduzcha Generatsiyasi',
-            'section': 'Yulduzcha Generatsiyasiga Xush Kelibsiz!',
+            'title': "Katta do'st",
+            'section': "Katta do'st sonlar",
         }
-        return render(request, 'menu.html', context)
-
-
-class SmallFriends(LoginRequiredMixin, View):
-    def get(self, request):
-        context = {
-            'title': "Kichik do'st",
-            'section': "Kichik do'st sonlar",
-        }
-        return render(request, 'smallFriends.html', context)
+        return render(request, 'bigFriends.html', context)
 
     def post(self, request):
         start = datetime.datetime.now()
         column, digits, count = request.POST.get('column'), request.POST.get('digits'), request.POST.get('count')
         requirement, method = request.POST.get('requirement'), request.POST.get('method')
-        mode = "Kichik do'st"
+        mode = "Katta do'st"
 
         f_name = f"{column} ustun {mode} {digits} xona {count}0 ta {requirement} {METHOD[method]} " + str(int(datetime.datetime.now().timestamp()))
         title = f"{column} ustun {mode} {digits} xona {count}0 ta {requirement} {METHOD[method]}"
@@ -70,20 +57,8 @@ class SmallFriends(LoginRequiredMixin, View):
                 print(f"Generatsiya vaqti: {end-start}")
                 return render(request, 'smallFriends.html', context)
         context = {
-            'title': "Kichik do'st",
-            'section': "Kichik do'st sonlar",
+            'title': "Katta do'st",
+            'section': "Katta do'st sonlar",
             'error': "Qandaydur xatolik yuz berdi!"
         }
-        return render(request, 'smallFriends.html', context)
-
-def download_pdf(request, file_id):
-    file_instance = get_object_or_404(Generate, id=file_id)
-    if file_instance.file_pdf:
-        file_path = file_instance.file_pdf.path
-        if os.path.exists(file_path):
-            with open(file_path, 'rb') as fh:
-                response = HttpResponse(fh.read(), content_type="application/octet-stream")
-                response['Content-Disposition'] = f'attachment; filename={file_instance.title}.pdf'
-                return response
-    raise Http404("Fayl mavjud emas yoki topilmadi.")
-
+        return render(request, 'bigFriends.html', context)

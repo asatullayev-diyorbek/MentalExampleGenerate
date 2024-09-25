@@ -7,7 +7,7 @@
             <h2 class="mb-4">{{ section }}</h2>
             <h6>{{ error }}</h6>
 
-            <form id="smallFriendsForm" action="{% url 'smallFriends' %}" method="post">
+            <form id="FriendsForm" action="{% url 'BigFriends' %}" method="post">
                 {% csrf_token %}
                 <div class="row d-flex" style="width: 100%; font-size: 20px;">
                     <div class="col-12 col-md-4 mb-3">
@@ -111,7 +111,7 @@
     </main>
 
     <script>
-        document.getElementById('smallFriendsForm').addEventListener('submit', function (event) {
+        document.getElementById('FriendsForm').addEventListener('submit', function (event) {
             event.preventDefault();
 
             var form = event.target;
