@@ -1,0 +1,133 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <main class="container-fluid d-flex justify-content-center align-items-center">
+        <section class="main-section text-center" style="width: 60%;">
+            <!-- Bo'lim nomi -->
+            <h2 class="mb-4">{{ section }}</h2>
+            <h6>{{ error }}</h6>
+
+            <form id="FriendsForm" action="{% url 'family' %}" method="post">
+                {% csrf_token %}
+                <div class="row d-flex" style="width: 100%; font-size: 20px;">
+                    <div class="col-12 col-md-4 mb-3">
+                        <label for="ustun">Ustunlar soni:</label>
+                        <select name="column" class="form-select text-center" id="ustun">
+                            <option value="4">4 ta</option>
+                            <option value="5">5 ta</option>
+                            <option value="6">6 ta</option>
+                            <option value="7">7 ta</option>
+                            <option value="8">8 ta</option>
+                            <option value="9">9 ta</option>
+                            <option value="10">10 ta</option>
+                            <option value="11">11 ta</option>
+                            <option value="12">12 ta</option>
+                            <option value="13">13 ta</option>
+                            <option value="14">14 ta</option>
+                            <option value="15">15 ta</option>
+                        </select>
+                    </div>
+                    <div class="col-12 col-md-4 mb-3">
+                        <label for="xonalar">Xonalar soni:</label>
+                        <select name="digits" class="form-select text-center" id="xonalar" aria-label="Default select example">
+                            <option value="1">1 ta</option>
+                            <option value="2">2 ta</option>
+                            <option value="3">3 ta</option>
+                            <option value="4">4 ta</option>
+                            <option value="5">5 ta</option>
+                        </select>
+                    </div>
+                    <div class="col-12 col-md-4 mb-3">
+                        <label for="misollar">Misollar soni:</label>
+                        <select name="count" class="form-select text-center" id="misollar">
+                            <option value="1">10 ta</option>
+                            <option value="2">20 ta</option>
+                            <option value="3">30 ta</option>
+                            <option value="4">40 ta</option>
+                            <option value="5">50 ta</option>
+                            <option value="6">60 ta</option>
+                            <option value="7">70 ta</option>
+                            <option value="8">80 ta</option>
+                            <option value="9">90 ta</option>
+                            <option value="10">100 ta</option>
+                            <option value="12">120 ta</option>
+                            <option value="14">140 ta</option>
+                            <option value="15">150 ta</option>
+                        </select>
+                    </div>
+
+                    <div class="col-12 col-md-4 mb-3">
+                        <label for="misollar">Talab:</label>
+                        <select name="requirement" class="form-select text-center" id="misollar">
+                            <option value="" selected>Yo'q</option>
+                            <option value="+6">+6</option>
+                            <option value="+7">+7</option>
+                            <option value="+8">+8</option>
+                            <option value="+9">+9</option>
+                        </select>
+                    </div>
+
+                    <div class="col-12 col-md-4 mb-3">
+                        <label for="misollar">Uslub:</label>
+                        <select name="method" class="form-select text-center" id="misollar"
+                                aria-label="Misollar sonini tanlang">
+                            <option value="parallel">Parallel</option>
+                            <option value="mixed" selected>Aralash</option>
+                            <option value="tenner">O'nlik</option>
+                        </select>
+                    </div>
+
+
+                </div>
+                <div class="row mt-3 d-flex justify-content-center start-home">
+                    <div class="col">
+                        <button id="startBtn" type="submit" class="btn btn-success btn-lg btn-block mb-3" style="position: relative;">
+                            <span id="btnText">Generatsiya</span>
+                            <i id="spinner" class="fa fa-spinner fa-spin" role="status" style="display: none;"></i>
+                        </button>
+                    </div>
+                    <div class="col">
+                        <a href="{% url 'menu' %}" class="btn btn-primary btn-lg btn-block">
+                            <i class="fa fa-home"></i>
+                        </a>
+                    </div>
+                </div>
+            </form>
+
+            {% if file_id %}
+                <div id="download" class="row">
+                    <div class="col">
+                        <a href="{% url 'download' file_id %}" class="btn btn-outline-warning btn-lg btn-block mt-3 mb-3">
+                            <span id="btnText">Yuklab olish</span>
+                        </a>
+                    </div>
+                </div>
+            {% endif %}
+        </section>
+    </main>
+
+    <script>
+        document.getElementById('FriendsForm').addEventListener('submit', function (event) {
+            event.preventDefault();
+
+            var form = event.target;
+            var startBtn = document.getElementById('startBtn');
+            var btnText = document.getElementById('btnText');
+            var spinner = document.getElementById('spinner');
+            var download = document.getElementById('download');
+            
+            startBtn.disabled = true;
+            btnText.textContent = "Bajarilmoqda...";
+            spinner.style.display = 'inline-block';
+            startBtn.style.backgroundColor = '#86d2b0';
+            
+            if (download) {
+                download.style.display = 'none';
+            }
+            
+            // Formani yuborish
+            form.submit();
+        });
+
+    </script>
+{% endblock %}

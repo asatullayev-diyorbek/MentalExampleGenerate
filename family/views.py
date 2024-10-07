@@ -8,24 +8,24 @@ from django.shortcuts import render
 from django.views.generic import View
 from weasyprint import HTML
 
-from bigFriends.htmlContent import html_content
+from family.htmlContent import html_content
 from smallFriends.models import Generate
 from smallFriends.views import METHOD
 
 
-class BigFriends(LoginRequiredMixin, View):
+class Family(LoginRequiredMixin, View):
     def get(self, request):
         context = {
-            'title': "Katta do'st",
-            'section': "Katta do'st sonlar",
+            'title': "Oila",
+            'section': "Oila sonlar",
         }
-        return render(request, 'bigFriends.html', context)
+        return render(request, 'family.html', context)
 
     def post(self, request):
         start = datetime.datetime.now()
         column, digits, count = request.POST.get('column'), request.POST.get('digits'), request.POST.get('count')
         requirement, method = request.POST.get('requirement'), request.POST.get('method')
-        mode = "Katta do'st"
+        mode = "Oila"
 
         f_name = f"{column} ustun {mode} {digits} xona {count}0 ta {requirement} {METHOD[method]} " + str(int(datetime.datetime.now().timestamp()))
         title = f"{column} ustun {mode} {digits} xona {count}0 ta {requirement} {METHOD[method]}"
@@ -49,16 +49,16 @@ class BigFriends(LoginRequiredMixin, View):
             file_path = generate_instance.file_pdf.path
             if os.path.exists(file_path):
                 context = {
-                    'title': "Katta do'st",
-                    'section': "Katta do'st sonlar",
+                    'title': "Oila",
+                    'section': "Oila sonlar",
                     'file_id': generate_instance.id,
                 }
                 end = datetime.datetime.now()
                 print(f"Generatsiya vaqti: {end-start}")
-                return render(request, 'bigFriends.html', context)
+                return render(request, 'family.html', context)
         context = {
-            'title': "Katta do'st",
-            'section': "Katta do'st sonlar",
+            'title': "Oila",
+            'section': "Oila sonlar",
             'error': "Qandaydur xatolik yuz berdi!"
         }
-        return render(request, 'bigFriends.html', context)
+        return render(request, 'family.html', context)

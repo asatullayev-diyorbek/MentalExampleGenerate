@@ -31,6 +31,8 @@ INSTALLED_APPS = [
 
     # My app
     'smallFriends',
+    'bigFriends',
+    'family',
     'django_cleanup',
 ]
 

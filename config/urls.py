@@ -9,5 +9,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include("smallFriends.urls")),
     path('big-friends/', include("bigFriends.urls")),
+    path('family/', include("family.urls")),
     path('logout/', user_logout, name='logout'),
 ] + static(MEDIA_URL, document_root=MEDIA_ROOT)

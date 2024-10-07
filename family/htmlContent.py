@@ -1,6 +1,6 @@
+from family import _family
 import datetime
-from bigFriends.bigFriend import large_friend
-from bigFriends.logo_base64 import base64_logo
+from family import logo_base64
 
 
 def html_content(column, digits, count, requirement, method, title):
@@ -29,7 +29,7 @@ def html_content(column, digits, count, requirement, method, title):
     header_block = f"""
         <div class="header">
             <span class="logo">
-                <img class='pdf-logo' src="{base64_logo}" alt="logo"> Yulduzcha<br>
+                <img class='pdf-logo' src="{logo_base64.base64_logo}" alt="logo"> Yulduzcha<br>
                 <i> Generatsiyasi</i>
             </span>
         </div>
@@ -45,7 +45,7 @@ def html_content(column, digits, count, requirement, method, title):
     result_tables = []
 
     for i in range(count):
-        res = large_friend(column=column, digits=digits, count=10, requirement=requirement, method=method)
+        res = _family.family(column=column, digits=digits, count=10, requirement=requirement, method=method)
 
         thead_piece = f"""
             <thead>
@@ -113,7 +113,7 @@ def html_content(column, digits, count, requirement, method, title):
 
 
 if __name__ == "__main__":
-    content = html_content(column=5, digits=1, count=10, requirement=' ', method='mixed', title=f'shunchaki {datetime.datetime.now()}')
+    content = html_content(column=5, digits=1, count=10, requirement=None, method='mixed', title=f'shunchaki {datetime.datetime.now()}')
     with open('html.html', 'w') as f:
         f.write(content)
         print("Saqlandi")
