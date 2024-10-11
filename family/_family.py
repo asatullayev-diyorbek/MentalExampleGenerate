@@ -2,6 +2,7 @@ import random
 import pprint
 from datetime import datetime
 from concurrent.futures import ThreadPoolExecutor, as_completed
+from .family_requirements import generate_example as generate_example_requirements
 
 
 def family_juftligi(son):
@@ -89,7 +90,10 @@ def family(column=5, requirement=None, digits=1, count=1, method='mixed'):
         'results': []
     }
     with ThreadPoolExecutor() as executor:
-        futures = [executor.submit(generate_example, column, requirement, digits, method) for _ in range(count)]
+        if requirement and digits == 1:
+            futures = [executor.submit(generate_example_requirements, column, requirement, digits) for _ in range(count)]
+        else:
+            futures = [executor.submit(generate_example, column, requirement, digits, method) for _ in range(count)]
         for future in as_completed(futures):
             example, result = future.result()
             if example is not None and result is not None:

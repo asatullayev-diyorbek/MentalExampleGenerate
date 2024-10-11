@@ -27,8 +27,8 @@ class Family(LoginRequiredMixin, View):
         requirement, method = request.POST.get('requirement'), request.POST.get('method')
         mode = "Oila"
 
-        f_name = f"{column} ustun {mode} {digits} xona {count}0 ta {requirement} {METHOD[method]} " + str(int(datetime.datetime.now().timestamp()))
-        title = f"{column} ustun {mode} {digits} xona {count}0 ta {requirement} {METHOD[method]}"
+        f_name = f"{column} ustun {mode} {digits} xona {count}0 ta {requirement if digits == 1 else ''} {METHOD[method]} " + str(int(datetime.datetime.now().timestamp()))
+        title = f"{column} ustun {mode} {digits} xona {count}0 ta {requirement if digits == 1 else ''} {METHOD[method]}"
 
         # HTML fayl yaratish
         hc = html_content(column=int(column), digits=int(digits), count=int(count), requirement=requirement, method=method, title=title)

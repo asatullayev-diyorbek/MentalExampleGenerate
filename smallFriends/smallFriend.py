@@ -2,6 +2,7 @@ import random
 from datetime import datetime
 from pprint import pprint
 from concurrent.futures import ThreadPoolExecutor, as_completed
+from .small_friend_requirements import generate_example as generate_example_requirements
 
 # Kichik do'st sonlar
 small_friends = [(1, 4), (2, 3), (3, 2), (4, 1)]
@@ -120,7 +121,10 @@ def small_friend(column=5, digits=1, count=10, requirement=None, method='mixed')
     }
 
     with ThreadPoolExecutor() as executor:
-        futures = [executor.submit(generate_example, column, digits, requirement, method) for _ in range(count)]
+        if requirement and digits == 1:
+            futures = [executor.submit(generate_example_requirements, column, requirement) for _ in range(count)]
+        else:
+            futures = [executor.submit(generate_example, column, digits, requirement, method) for _ in range(count)]
         for future in as_completed(futures):
             example, result = future.result()
             if example is not None and result is not None:
@@ -133,7 +137,6 @@ def small_friend(column=5, digits=1, count=10, requirement=None, method='mixed')
 if __name__ == '__main__':
     start = datetime.now()
     for _ in range(1):
-        print(_ + 1)
-        pprint(small_friend(column=5, digits=1, method='parallel', requirement='-3'))
+        pprint(small_friend(column=5, digits=1, requirement='-3', method='mixed'))
     end = datetime.now()
     print(f"Ijro vaqt: {end - start}")

@@ -2,6 +2,7 @@ import random
 from datetime import datetime
 from pprint import pprint
 from concurrent.futures import ThreadPoolExecutor, as_completed
+from .big_friend_requirements import generate_example as generate_example_requirements
 
 # Katta do'st sonlar
 large_friends = [(1, 9), (2, 8), (3, 7), (4, 6), (5, 5), (6, 4), (7, 3), (8, 2), (9, 1)]
@@ -127,8 +128,10 @@ def large_friend(column=5, digits=1, count=10, requirement=None, method='mixed')
     }
 
     with ThreadPoolExecutor() as executor:
-        futures = [executor.submit(generate_large_friend_example, column, digits, requirement, method) for _ in
-                   range(count)]
+        if requirement and digits == 1:
+            futures = [executor.submit(generate_example_requirements, column, requirement, digits) for _ in range(count)]
+        else:
+            futures = [executor.submit(generate_large_friend_example, column, digits, requirement, method) for _ in range(count)]
         for future in as_completed(futures):
             example, result = future.result()
             if example is not None and result is not None:
