@@ -107,7 +107,10 @@ def send_to_telegram(request, file_id):
                 # Foydalanuvchilarga fayl va matnni bitta xabarda yuborish
                 for chat_id in chats_id:
                     pdf_file.seek(0)
-                    bot.send_document(chat_id=chat_id, document=pdf_file, caption=caption_text)
+                    try:
+                        bot.send_document(chat_id=chat_id, document=pdf_file, caption=caption_text)
+                    except:
+                        return JsonResponse({"status": "error", "message": "Telegramdan <a href='https://t.me/yulduzchageneratebot' target=_blank'>@yulduzchageneratebot</a> ga a'zo bo'lmagansiz."})
 
                 # Adminga fayl va matnni bitta xabarda yuborish
                 pdf_file.seek(0)
