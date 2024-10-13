@@ -15,3 +15,15 @@ class Generate(models.Model):
     class Meta:
         verbose_name = "Generatsiya"
         verbose_name_plural = "Generatsiyalar"
+
+
+class Telegram(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    chat_id = models.CharField(max_length=255)
+
+    def __str__(self):
+        return self.chat_id + " - " + self.user.username
+
+    class Meta:
+        verbose_name = "Telegram Akkaunt"
+        verbose_name_plural = "Telegram Akkauntlar"

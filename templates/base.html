@@ -18,6 +18,47 @@
 
 
     <link rel="icon" href="{% static 'smallFriends/logo/logo.png' %}">
+
+    <style>
+        #toast-container {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 1050;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
+
+.toast {
+    background-color: #f0f4ff;
+    color: #4a4a4a;
+    border-radius: 8px;
+    padding: 10px 15px;
+    margin-bottom: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    animation: slide-in 0.3s ease-out;
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+}
+
+.toast-body {
+    font-size: 16px;
+    color: #4a4a4a;
+}
+
+@keyframes slide-in {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+    </style>
     <!-- Custom Styles -->
 {#    <link rel="stylesheet" href="{% static 'style.css' %}">#}
 </head>
@@ -30,6 +71,28 @@
         {% endblock %}
 
         {% include 'components/footer.html' %}
+
+        <div id="toast-container"></div>
+
+<script>
+    function showToast(message, title = "Notification") {
+        var toastId = 'toast-' + Math.random().toString(36).substring(2, 9);
+
+        var toastHTML = `
+        <div id="${toastId}" class="toast show" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="toast-body">
+                ${message}
+            </div>
+        </div>`;
+
+        document.getElementById('toast-container').insertAdjacentHTML('beforeend', toastHTML);
+
+        // Remove toast after a few seconds
+        setTimeout(() => {
+            document.getElementById(toastId).remove();
+        }, 3000);
+    }
+</script>
 
     <!-- MDB -->
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/7.3.2/mdb.umd.min.js"></script>

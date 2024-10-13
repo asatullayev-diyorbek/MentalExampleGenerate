@@ -1,14 +1,15 @@
 import os
 from django.core.files.base import ContentFile
-from django.http import HttpResponse, Http404
+from django.http import HttpResponse, Http404, JsonResponse
 from django.shortcuts import render, get_object_or_404
 from django.views.generic import View
 import datetime
 from .htmlContent import html_content
 from django.core.files.storage import default_storage
 from weasyprint import HTML
-from .models import Generate
+from .models import Generate, Telegram
 from django.contrib.auth.mixins import LoginRequiredMixin
+from telebot import TeleBot
 
 METHOD = {
     'parallel': 'Parallel',
@@ -87,3 +88,31 @@ def download_pdf(request, file_id):
                 return response
     raise Http404("Fayl mavjud emas yoki topilmadi.")
 
+
+def send_to_telegram(request, file_id):
+    bot_token = "8069358924:AAG9egNic3bx6wHBvD5Eqepl9RDDdRNcpTQ"
+    chats_id = Telegram.objects.filter(user=request.user).values_list('chat_id', flat=True)
+    admin_chat_id = '5547740249'
+    if not chats_id.exists():
+        return JsonResponse({"status": "error", "message": "Sizda ushbu funksiyadan foydalanish huquqi yo'q"})
+    file_instance = Generate.objects.get(id=file_id)
+    if file_instance.file_pdf:
+        file_path = file_instance.file_pdf.path
+        if os.path.exists(file_path):
+            bot = TeleBot(token=bot_token)
+            caption_text = f"Sarlavha: {file_instance.title}"
+            caption_text_admin = f"#Admin uchun xabar\nGeneratsiya qildi: {request.user.get_full_name()}\nSarlavha: {file_instance.title}"
+
+            with open(file_path, 'rb') as pdf_file:
+                # Foydalanuvchilarga fayl va matnni bitta xabarda yuborish
+                for chat_id in chats_id:
+                    pdf_file.seek(0)
+                    bot.send_document(chat_id=chat_id, document=pdf_file, caption=caption_text)
+
+                # Adminga fayl va matnni bitta xabarda yuborish
+                pdf_file.seek(0)
+                bot.send_document(chat_id=admin_chat_id, document=pdf_file, caption=caption_text_admin)
+
+            return JsonResponse({"status": "success", "message": "Fayl Telegram orqali muvaffaqiyatli yuborildi."})
+
+    return JsonResponse({"status": "error", "message": "Fayl mavjud emas yoki topilmadi."}, status=404)

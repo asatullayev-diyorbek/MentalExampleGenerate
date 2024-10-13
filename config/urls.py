@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.urls import path, include
 from django.conf.urls.static import static
-from .settings import MEDIA_URL, MEDIA_ROOT
+from django.conf import settings
 from .views import user_login, user_logout
 
 urlpatterns = [
@@ -11,4 +11,4 @@ urlpatterns = [
     path('big-friends/', include("bigFriends.urls")),
     path('family/', include("family.urls")),
     path('logout/', user_logout, name='logout'),
-] + static(MEDIA_URL, document_root=MEDIA_ROOT)
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

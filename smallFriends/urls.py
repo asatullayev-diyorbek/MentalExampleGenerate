@@ -6,4 +6,5 @@ urlpatterns = [
     path('small-friends/', views.SmallFriends.as_view(), name='smallFriends'),
 
     path('download/<int:file_id>/', views.download_pdf, name='download'),
+    path('send-to-telegram/<int:file_id>/', views.send_to_telegram, name='send_to_telegram'),
 ]

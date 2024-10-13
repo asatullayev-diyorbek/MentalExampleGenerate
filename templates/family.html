@@ -97,9 +97,18 @@
             {% if file_id %}
                 <div id="download" class="row">
                     <div class="col">
-                        <a href="{% url 'download' file_id %}" class="btn btn-outline-warning btn-lg btn-block mt-3 mb-3">
+                        <a href="{% url 'download' file_id %}"
+                           class="btn btn-outline-warning btn-lg btn-block mt-3 mb-3">
                             <span id="btnText">Yuklab olish</span>
                         </a>
+                    </div>
+                </div>
+                <div id="sendToTelegram" class="row">
+                    <div class="col">
+                        <button type="button" onclick="sendToTelegram('{{ file_id }}')"
+                                class="btn btn-outline-primary btn-lg btn-block mt-3 mb-3">
+                            <span id="btnTextTelegram"><i class="fab fa-telegram"></i> Telegram orqali</span>
+                        </button>
                     </div>
                 </div>
             {% endif %}
@@ -107,7 +116,7 @@
     </main>
 
     <script>
-        document.getElementById('FriendsForm').addEventListener('submit', function (event) {
+        document.getElementById('smallFriendsForm').addEventListener('submit', function (event) {
             event.preventDefault();
 
             var form = event.target;
@@ -115,19 +124,56 @@
             var btnText = document.getElementById('btnText');
             var spinner = document.getElementById('spinner');
             var download = document.getElementById('download');
-            
+            var sendToTelegram = document.getElementById('sendToTelegram');
+
             startBtn.disabled = true;
             btnText.textContent = "Bajarilmoqda...";
             spinner.style.display = 'inline-block';
             startBtn.style.backgroundColor = '#86d2b0';
-            
+
             if (download) {
                 download.style.display = 'none';
+                sendToTelegram.style.display = 'none';
             }
-            
+
             // Formani yuborish
             form.submit();
         });
 
+        function sendToTelegram(file_id) {
+            var btnTextTelegram = document.getElementById('btnTextTelegram');
+            var url = '/send-to-telegram/' + file_id + '/';  // URL avtomatik shakllantiriladi
+
+            // CSRF tokenini olish
+            var csrftoken = '{{ csrf_token }}';
+
+            // Tugma matnini o'zgartirish va disable qilish
+            btnTextTelegram.textContent = "Yuborilmoqda...";
+            document.querySelector('#sendToTelegram button').disabled = true;
+
+            fetch(url, {
+                method: 'POST',  // POST metodini ishlatamiz
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': csrftoken  // CSRF tokenini qo'shamiz
+                },
+                body: JSON.stringify({})  // Qo'shimcha ma'lumotlar kerak bo'lmasa bo'sh ob'ekt
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === 'success') {
+                        showToast(data.message);  // Muvaffaqiyatli yuborish
+                    } else {
+                        showToast(data.message);
+                    }
+                })
+                .catch(error => console.log('Error:', error))
+                .finally(() => {
+                    // Tugma matnini qayta tiklash va enabled qilish
+                    btnTextTelegram.innerHTML = '<span id="btnTextTelegram"><i class="fab fa-telegram"></i> Telegram orqali</span>';
+                    document.querySelector('#sendToTelegram button').disabled = false;
+                });
+        }
     </script>
 {% endblock %}
