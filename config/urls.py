@@ -10,5 +10,6 @@ urlpatterns = [
     path('', include("smallFriends.urls")),
     path('big-friends/', include("bigFriends.urls")),
     path('family/', include("family.urls")),
+    path('simple/', include("simple.urls")),
     path('logout/', user_logout, name='logout'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

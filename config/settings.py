@@ -33,6 +33,7 @@ INSTALLED_APPS = [
     'smallFriends',
     'bigFriends',
     'family',
+    'simple',
     'django_cleanup',
 ]
 

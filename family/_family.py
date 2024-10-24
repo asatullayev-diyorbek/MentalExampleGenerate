@@ -83,7 +83,7 @@ def generate_example(column, requirement, digits, method='tenner'):
                 expression += f" {operations[i]}{numbers[i + 1]}"
             return expression, natija
 
-def family(column=5, requirement=None, digits=1, count=1, method='mixed'):
+def family(column=5, digits=1, count=1, method='mixed'):
     """Foydalanuvchi tanlagan ustunlar soniga ko'ra misollarni yaratish."""
     response = {
         'examples': [],

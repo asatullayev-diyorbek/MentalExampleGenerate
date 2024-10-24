@@ -90,32 +90,47 @@ def download_pdf(request, file_id):
 
 
 def send_to_telegram(request, file_id):
-    bot_token = "8069358924:AAG9egNic3bx6wHBvD5Eqepl9RDDdRNcpTQ"
     chats_id = Telegram.objects.filter(user=request.user).values_list('chat_id', flat=True)
-    admin_chat_id = '5547740249'
+
     if not chats_id.exists():
         return JsonResponse({"status": "error", "message": "Sizda ushbu funksiyadan foydalanish huquqi yo'q"})
+
+    bot_token = "8069358924:AAG9egNic3bx6wHBvD5Eqepl9RDDdRNcpTQ"
+    admin_chat_id = '5547740249'
+
+
     file_instance = Generate.objects.get(id=file_id)
+
     if file_instance.file_pdf:
         file_path = file_instance.file_pdf.path
-        if os.path.exists(file_path):
-            bot = TeleBot(token=bot_token)
-            caption_text = f"Sarlavha: {file_instance.title}"
-            caption_text_admin = f"#Admin uchun xabar\nGeneratsiya qildi: {request.user.get_full_name()}\nSarlavha: {file_instance.title}"
 
+        # Fayl mavjudligini tekshirish
+        if not os.path.exists(file_path):
+            return JsonResponse({"status": "error", "message": "Fayl yo'q."}, status=404)
+
+        bot = TeleBot(token=bot_token)
+        caption_text = f"Sarlavha: {file_instance.title}"
+        caption_text_admin = f"#Admin uchun xabar\nGeneratsiya qildi: {request.user.get_full_name()}\nSarlavha: {file_instance.title}"
+
+        # Foydalanuvchilarga fayl va matnni bitta xabarda yuborish
+        for chat_id in chats_id:
+            try:
+                with open(file_path, 'rb') as pdf_file:
+                    bot.send_document(chat_id=chat_id, document=pdf_file, caption=caption_text)
+            except Exception as e:
+                print(f"Foydalanuvchiga yuborishda xato: {str(e)}")
+                return JsonResponse({"status": "error",
+                                     "message": "Telegramdan <a href='https://t.me/yulduzchageneratebot' target=_blank'>@yulduzchageneratebot</a> ga a'zo bo'lmagansiz."})
+
+        # Adminga fayl va matnni bitta xabarda yuborish
+        try:
             with open(file_path, 'rb') as pdf_file:
-                # Foydalanuvchilarga fayl va matnni bitta xabarda yuborish
-                for chat_id in chats_id:
-                    pdf_file.seek(0)
-                    try:
-                        bot.send_document(chat_id=chat_id, document=pdf_file, caption=caption_text)
-                    except:
-                        return JsonResponse({"status": "error", "message": "Telegramdan <a href='https://t.me/yulduzchageneratebot' target=_blank'>@yulduzchageneratebot</a> ga a'zo bo'lmagansiz."})
-
-                # Adminga fayl va matnni bitta xabarda yuborish
-                pdf_file.seek(0)
                 bot.send_document(chat_id=admin_chat_id, document=pdf_file, caption=caption_text_admin)
+        except Exception as e:
+            print(f"Adminga yuborishda xato: {str(e)}")
+            return JsonResponse({"status": "error", "message": "Adminga fayl yuborishda xato."})
 
-            return JsonResponse({"status": "success", "message": "Fayl Telegram orqali muvaffaqiyatli yuborildi."})
+        return JsonResponse({"status": "success", "message": "Fayl Telegram orqali muvaffaqiyatli yuborildi."})
 
     return JsonResponse({"status": "error", "message": "Fayl mavjud emas yoki topilmadi."}, status=404)
+
